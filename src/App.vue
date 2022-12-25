@@ -2,11 +2,17 @@
 	<div id="root">
 		<div class="todo-container">
 			<div class="todo-wrap">
-				<MyHeader :addTodo="addTodo"></MyHeader>
+				<MyHeader :addTodo="addTodo"> </MyHeader>
 				<MyList
 					:todos="todos"
-					:checkTodo="checkTodo"></MyList>
-				<MyFooter></MyFooter>
+					:checkTodo="checkTodo"
+					:delTodo="delTodo">
+				</MyList>
+				<MyFooter
+					:todos="todos"
+					:checkAllTodo="checkAllTodo"
+					:clearAllTodo="clearAllTodo">
+				</MyFooter>
 			</div>
 		</div>
 	</div>
@@ -39,14 +45,33 @@
 			},
 			// 勾选or取消
 			checkTodo(id) {
+				// 遍历数组
 				this.todos.forEach((todo) => {
+					// 如果传入的和原来的id相同就取反
 					if (todo.id === id) todo.done = !todo.done
+				})
+			},
+			// 删除todo
+			delTodo(id) {
+				this.todos = this.todos.filter((todo) => {
+					return todo.id !== id
+				})
+			},
+			// 全选or全不选
+			checkAllTodo(done) {
+				this.todos.forEach((todo) => {
+					todo.done = done
+				})
+			},
+			// 清除所以完成的todo
+			clearAllTodo() {
+				this.todos = this.todos.filter((todo) => {
+					// 过滤掉真留下假
+					return !todo.done
 				})
 			},
 		},
 	}
-	// Vue 3 Snippets
-	// Vetur
 </script>
 
 <style>

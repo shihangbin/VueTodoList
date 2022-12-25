@@ -9,7 +9,7 @@
 		</label>
 		<button
 			class="btn btn-danger"
-			style="display: none">
+			@click="del(todoObj.id)">
 			删除
 		</button>
 	</li>
@@ -18,11 +18,14 @@
 <script>
 	export default {
 		name: 'MyTodo',
-		props: ['todoObj', 'checkTodo'],
+		props: ['todoObj', 'checkTodo','delTodo'],
 		methods: {
 			handerCheck(id) {
 				// 通知App组件done值取反
 				this.checkTodo(id)
+			},
+			del(id) {
+				this.delTodo(id)
 			},
 		},
 	}
@@ -54,6 +57,13 @@
 		float: right;
 		display: none;
 		margin-top: 3px;
+	}
+	li:hover button {
+		display: block;
+	}
+
+	li:hover {
+		background: #ddd;
 	}
 
 	li:before {
