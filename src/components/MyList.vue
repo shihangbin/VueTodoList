@@ -1,6 +1,11 @@
 <template>
 	<ul class="todo-main">
-		<MyTodo></MyTodo>
+		<MyTodo
+			v-for="todoObj in todos"
+			:key="todoObj.id"
+			:todoObj="todoObj"
+			:checkTodo="checkTodo">
+		</MyTodo>
 	</ul>
 </template>
 
@@ -9,6 +14,7 @@
 	export default {
 		name: 'MyList',
 		components: { MyTodo },
+		props: ['todos','checkTodo'],
 	}
 </script>
 

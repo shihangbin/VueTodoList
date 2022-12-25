@@ -1,13 +1,15 @@
 <template>
 	<li>
 		<label>
-			<input type="checkbox" />
-			<span>xxxxx</span>
+			<input
+				type="checkbox"
+				:checked="todoObj.done"
+				@click="handerCheck(todoObj.id)" />
+			<span>{{ todoObj.title }}</span>
 		</label>
 		<button
 			class="btn btn-danger"
-			style="display: none"
-		>
+			style="display: none">
 			删除
 		</button>
 	</li>
@@ -16,6 +18,13 @@
 <script>
 	export default {
 		name: 'MyTodo',
+		props: ['todoObj', 'checkTodo'],
+		methods: {
+			handerCheck(id) {
+				// 通知App组件done值取反
+				this.checkTodo(id)
+			},
+		},
 	}
 </script>
 

@@ -3,13 +3,35 @@
 		<input
 			type="text"
 			placeholder="请输入你的任务名称，按回车键确认"
-		/>
+			v-model="title"
+			@keyup.enter="add()" />
+			<!-- @keyup.enter 按下回车调用函数 -->
 	</div>
 </template>
 
 <script>
+	import { nanoid } from 'nanoid'
 	export default {
 		name: 'MyHeader',
+		// 接收数据
+		props: ['addTodo'],
+		data() {
+			return {
+				title: '',
+			}
+		},
+		methods: {
+			add() {
+				// 去掉前后的空格
+				if (!this.title.trim()) return
+				// 将用户的输入包装成todo对象
+				const todoObj = { id: nanoid(), title: this.title, done: false }
+				// 通知App组件添加一个TodoObj
+				this.addTodo(todoObj)
+				// 清空输入
+				this.title = ''
+			},
+		},
 	}
 </script>
 
