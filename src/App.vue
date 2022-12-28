@@ -31,11 +31,13 @@
 		},
 		data() {
 			return {
-				todos: [
-					{ id: '001', title: '吃饭', done: true },
-					{ id: '002', title: '睡觉', done: false },
-					{ id: '003', title: '敲代码', done: true },
-				],
+				// todos: [
+				// 	{ id: '001', title: '吃饭', done: true },
+				// 	{ id: '002', title: '睡觉', done: false },
+				// 	{ id: '003', title: '敲代码', done: true },
+				// ],
+				//由于todos是MyHeader组件和MyFooter组件都在使用，所以放在App中（状态提升）
+				todos: JSON.parse(localStorage.getItem('todos')) || [],
 			}
 		},
 		methods: {
@@ -69,6 +71,15 @@
 					// 过滤掉真留下假
 					return !todo.done
 				})
+			},
+		},
+		watch: {
+			todos: {
+				handler(value) {
+					// 添加todos数据
+					localStorage.setItem('todos', JSON.stringify(value))
+				},
+				deep: true,
 			},
 		},
 	}
