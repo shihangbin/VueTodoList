@@ -63,6 +63,14 @@
 					return !todo.done
 				})
 			},
+			// 更新一个Todo
+			updataTodo(id, title) {
+				// 遍历数组
+				this.todos.forEach((todo) => {
+					// 如果传入的和原来的id相同就取反
+					if (todo.id === id) todo.title = title
+				})
+			},
 		},
 		watch: {
 			todos: {
@@ -80,10 +88,12 @@
 			// 消息订阅与发布
 			// 订阅
 			this.pubId = pubsub.subscribe('deleteTodo', this.delTodo)
+			// 修改
+			this.$bus.$on('updataTodo', this.updataTodo)
 		},
 		beforeDestroy() {
 			// 取消自定义事件
-			this.$bus.$off('checkTodo')
+			this.$bus.$off('checkTodo','updataTodo')
 			// 取消订阅
 			pubsub.unsubscribe(this.pubId)
 		},
@@ -108,6 +118,18 @@
 		box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2),
 			0 1px 2px rgba(0, 0, 0, 0.05);
 		border-radius: 4px;
+	}
+
+	.btn-edit {
+		color: #fff;
+		background-color: rgb(74, 204, 255);
+		border: 1px solid rgba(0, 247, 255, 0.785);
+		margin-right: 5px;
+	}
+
+	.btn-edit:hover {
+		color: #fff;
+		background-color: #1b87ab;
 	}
 
 	.btn-danger {

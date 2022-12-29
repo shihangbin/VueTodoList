@@ -5,12 +5,24 @@
 				type="checkbox"
 				:checked="todoObj.done"
 				@click="handerCheck(todoObj.id)" />
-			<span>{{ todoObj.title }}</span>
+			<span v-show="!todoObj.isEdit">{{ todoObj.title }}</span>
+			<input
+				type="text"
+				:value="todoObj.title"
+				v-show="todoObj.isEdit"
+				@blur="handerBlur(todoObj, $event)"
+				ref="inputTitle" />
 		</label>
 		<button
 			class="btn btn-danger"
 			@click="del(todoObj.id)">
 			删除
+		</button>
+		<button
+			class="btn btn-edit"
+			@click="handerEdit(todoObj)"
+			v-show="!todoObj.isEdit">
+			修改
 		</button>
 	</li>
 </template>
@@ -29,6 +41,24 @@
 			del(id) {
 				// 发送订阅消息
 				pubsub.publish('deleteTodo', id)
+			},
+			// 编辑
+			handerEdit(todo) {
+				if (todo.hasOwnProperty('isEdit')) {
+					todo.isEdit = true
+				} else {
+					this.$set(todo, 'isEdit', true)
+				}
+				// $nextTick dom执行完后执行
+				this.$nextTick(function () {
+					this.$refs.inputTitle.focus()
+				})
+			},
+			// 失去焦点回调
+			handerBlur(todo, e) {
+				todo.isEdit = false
+				if (!e.target.value.trim()) return alert('不能为空！')
+				this.$bus.$emit('updataTodo', todo.id, e.target.value)
 			},
 		},
 	}
