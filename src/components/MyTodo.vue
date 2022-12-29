@@ -18,14 +18,15 @@
 <script>
 	export default {
 		name: 'MyTodo',
-		props: ['todoObj', 'checkTodo','delTodo'],
+		props: ['todoObj'],
 		methods: {
 			handerCheck(id) {
 				// 通知App组件done值取反
-				this.checkTodo(id)
+				// 触发事件checkTodo返回id
+				this.$bus.$emit('checkTodo', id)
 			},
 			del(id) {
-				this.delTodo(id)
+				this.$bus.$emit('delTodo', id)
 			},
 		},
 	}

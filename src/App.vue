@@ -3,11 +3,7 @@
 		<div class="todo-container">
 			<div class="todo-wrap">
 				<MyHeader @addTodo="addTodo"> </MyHeader>
-				<MyList
-					:todos="todos"
-					:checkTodo="checkTodo"
-					:delTodo="delTodo">
-				</MyList>
+				<MyList :todos="todos"> </MyList>
 				<MyFooter
 					:todos="todos"
 					@checkAllTodo="checkAllTodo"
@@ -31,13 +27,6 @@
 		},
 		data() {
 			return {
-				// todos: [
-				// 	{ id: '001', title: '吃饭', done: true },
-				// 	{ id: '002', title: '睡觉', done: false },
-				// 	{ id: '003', title: '敲代码', done: true },
-				// ],
-				//由于todos是MyHeader组件和MyFooter组件都在使用，所以放在App中（状态提升）
-				// 获取todos数据
 				todos: JSON.parse(localStorage.getItem('todos')) || [],
 			}
 		},
@@ -82,6 +71,15 @@
 				},
 				deep: true,
 			},
+		},
+		// 挂载
+		mounted() {
+			// 创建自定义事件
+			this.$bus.$on('checkTodo', this.checkTodo)
+			this.$bus.$on('delTodo', this.delTodo)
+		},
+		beforeDestroy() {
+			this.$bus.$off('checkTodo', 'delTodo')
 		},
 	}
 </script>

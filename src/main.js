@@ -9,4 +9,7 @@ Vue.config.productionTip = false
 // 绑定组件
 new Vue({
 	render: (h) => h(App),
+	beforeCreate() {
+		Vue.prototype.$bus = this
+	},
 }).$mount('#app')
