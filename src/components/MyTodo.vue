@@ -16,6 +16,7 @@
 </template>
 
 <script>
+	import pubsub from 'pubsub-js'
 	export default {
 		name: 'MyTodo',
 		props: ['todoObj'],
@@ -26,7 +27,8 @@
 				this.$bus.$emit('checkTodo', id)
 			},
 			del(id) {
-				this.$bus.$emit('delTodo', id)
+				// 发送订阅消息
+				pubsub.publish('deleteTodo', id)
 			},
 		},
 	}

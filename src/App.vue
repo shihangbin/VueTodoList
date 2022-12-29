@@ -15,6 +15,7 @@
 </template>
 
 <script>
+	import pubsub from 'pubsub-js'
 	import MyHeader from './components/MyHeader.vue'
 	import MyList from './components/MyList.vue'
 	import MyFooter from './components/MyFooter.vue'
@@ -44,7 +45,7 @@
 				})
 			},
 			// 删除todo
-			delTodo(id) {
+			delTodo(_, id) {
 				this.todos = this.todos.filter((todo) => {
 					return todo.id !== id
 				})
@@ -76,10 +77,15 @@
 		mounted() {
 			// 创建自定义事件
 			this.$bus.$on('checkTodo', this.checkTodo)
-			this.$bus.$on('delTodo', this.delTodo)
+			// 消息订阅与发布
+			// 订阅
+			this.pubId = pubsub.subscribe('deleteTodo', this.delTodo)
 		},
 		beforeDestroy() {
-			this.$bus.$off('checkTodo', 'delTodo')
+			// 取消自定义事件
+			this.$bus.$off('checkTodo')
+			// 取消订阅
+			pubsub.unsubscribe(this.pubId)
 		},
 	}
 </script>
