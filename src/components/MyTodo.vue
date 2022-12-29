@@ -1,30 +1,34 @@
 <template>
-	<li>
-		<label>
-			<input
-				type="checkbox"
-				:checked="todoObj.done"
-				@click="handerCheck(todoObj.id)" />
-			<span v-show="!todoObj.isEdit">{{ todoObj.title }}</span>
-			<input
-				type="text"
-				:value="todoObj.title"
-				v-show="todoObj.isEdit"
-				@blur="handerBlur(todoObj, $event)"
-				ref="inputTitle" />
-		</label>
-		<button
-			class="btn btn-danger"
-			@click="del(todoObj.id)">
-			删除
-		</button>
-		<button
-			class="btn btn-edit"
-			@click="handerEdit(todoObj)"
-			v-show="!todoObj.isEdit">
-			修改
-		</button>
-	</li>
+	<transition
+		name="todo"
+		:appear="true">
+		<li>
+			<label>
+				<input
+					type="checkbox"
+					:checked="todoObj.done"
+					@click="handerCheck(todoObj.id)" />
+				<span v-show="!todoObj.isEdit">{{ todoObj.title }}</span>
+				<input
+					type="text"
+					:value="todoObj.title"
+					v-show="todoObj.isEdit"
+					@blur="handerBlur(todoObj, $event)"
+					ref="inputTitle" />
+			</label>
+			<button
+				class="btn btn-danger"
+				@click="del(todoObj.id)">
+				删除
+			</button>
+			<button
+				class="btn btn-edit"
+				@click="handerEdit(todoObj)"
+				v-show="!todoObj.isEdit">
+				修改
+			</button>
+		</li>
+	</transition>
 </template>
 
 <script>
@@ -105,5 +109,23 @@
 
 	li:last-child {
 		border-bottom: none;
+	}
+
+	/* 进入开始 终止结束 */
+	.todo-enter,
+	.todo-leave-to {
+		transform: translateX(-100%);
+	}
+
+	/* 终止开始 进入结束 */
+	.todo-leave,
+	.todo-enter-to {
+		transform: translateX(0);
+	}
+
+	/* 过度效果 */
+	.todo-enter-active,
+	.todo-leave-active {
+		transition: .5s;
 	}
 </style>
